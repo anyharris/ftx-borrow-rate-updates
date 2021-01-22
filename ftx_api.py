@@ -28,7 +28,7 @@ class Ftx:
         }
         return headers
 
-    def get_spot_margin_rates(self):
+    def get_spot_margin_borrow(self):
         path = '/spot_margin/borrow_rates'
         endpoint = self.API_HOST + path
         request = Request('GET', endpoint)
@@ -40,5 +40,16 @@ class Ftx:
         response = s.send(prepared)
         return response
 
+    def get_spot_margin_lend(self):
+        path = '/spot_margin/lending_rates'
+        endpoint = self.API_HOST + path
+        request = Request('GET', endpoint)
+        prepared = request.prepare()
+        ts = _ts()
+        signature = self._sign(prepared, ts, path)
+        headers = self._headers(signature, ts)
+        prepared.headers = headers
+        response = s.send(prepared)
+        return response
 
 s = Session()
